@@ -7,14 +7,33 @@ class App extends React.Component {
     state = { advive: '' };
 
     componentDidMount() {
-        
+        this.fetchAdvice();
     }
 
-
+    fetchAdvice = () => {
+        axios.get('https://api.adviceslip.com/advice')
+            .then((response) => {
+                const advice = response.data.slip.advice;
+                
+                this.setState({ advice });
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     render() {
+        const { advice } = this.state;
+
         return (
-            <h1>APP</h1>
+            <div className ="app">
+                <div className="card">
+                    <h1 className="heading">{advice}</h1>
+                    <button className="button" onClick={this.fetchAdvice}>
+                        <span>GIVE ME ADVICE</span>
+                    </button>
+                </div>
+            </div>
         )
     }
 }
